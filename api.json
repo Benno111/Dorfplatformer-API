@@ -1,0 +1,18 @@
+{
+  "name": "DF-New Level Upload API",
+  "type": "client-side",
+  "host": "GitHub Pages",
+  "storage": "Firebase Realtime Database REST API",
+  "level_read_contract": {
+    "list_ids": "/levels.json?shallow=true",
+    "fetch_level_data": "/levels/<id>/data.json"
+  },
+  "level_write_contract": {
+    "put_level_object": "/levels/<id>.json",
+    "required_field": "data"
+  },
+  "notes": [
+    "This is a static web client, not a server runtime.",
+    "Database auth depends on your Firebase rules; pass token via UI if required."
+  ]
+}
