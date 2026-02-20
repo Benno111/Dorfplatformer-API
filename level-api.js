@@ -7,6 +7,7 @@
 
   var baseUrlInput = q("baseUrl");
   var authTokenInput = q("authToken");
+  var accountUsernameInput = q("accountUsername");
   var levelIdInput = q("levelId");
   var levelNameInput = q("levelName");
   var authorInput = q("author");
@@ -44,24 +45,34 @@
     return "?auth=" + encodeURIComponent(t);
   }
 
-  function makeLevelId(raw) {
-    var inId = (raw || "").trim();
-    if (inId) {
-      return inId.replace(/[^a-zA-Z0-9_-]/g, "_");
-    }
-    return "level_" + Date.now();
+  function sanitizePart(raw, fallbackValue) {
+    var v = (raw || "").trim().replace(/[^a-zA-Z0-9_-]/g, "_");
+    if (!v) return fallbackValue || "level";
+    return v;
+  }
+
+  function makeLevelId(username, levelName) {
+    var userPart = sanitizePart(username, "user");
+    var levelPart = sanitizePart(levelName, "level");
+    return userPart + "-" + levelPart;
   }
 
   async function uploadLevel() {
     var base = normalizeBaseUrl(baseUrlInput.value);
     var token = authTokenInput.value;
-    var levelId = makeLevelId(levelIdInput.value);
-    var levelName = (levelNameInput.value || "").trim();
-    var author = (authorInput.value || "").trim();
+    var accountUsername = ((accountUsernameInput && accountUsernameInput.value) || (authorInput && authorInput.value) || "").trim();
+    var levelNameRaw = (levelNameInput.value || levelIdInput.value || "").trim();
+    var levelId = makeLevelId(accountUsername, levelNameRaw);
+    var levelName = sanitizePart(levelNameRaw, "level");
+    var owner = sanitizePart(accountUsername, "");
     var data = levelDataInput.value || "";
 
     if (!base) {
       log("Base URL is required.", "err");
+      return;
+    }
+    if (!owner) {
+      log("Account username is required.", "err");
       return;
     }
     if (!data.trim()) {
@@ -70,14 +81,13 @@
     }
 
     var url = base + "/levels/" + encodeURIComponent(levelId) + ".json" + authQuery(token);
-    var now = new Date().toISOString();
+    var nowSeconds = Math.floor(Date.now() / 1000);
     var payload = {
-      id: levelId,
-      name: levelName || levelId,
-      author: author || "unknown",
+      name: levelName,
+      owner: owner,
+      level_id: levelId,
       data: data,
-      created_at: now,
-      updated_at: now,
+      uploaded_at: nowSeconds,
       source: "df-new-gh-pages-uploader"
     };
 
@@ -103,6 +113,8 @@
   async function listLevels() {
     var base = normalizeBaseUrl(baseUrlInput.value);
     var token = authTokenInput.value;
+    var accountUsername = ((accountUsernameInput && accountUsernameInput.value) || (authorInput && authorInput.value) || "").trim();
+    var ownerPrefix = sanitizePart(accountUsername, "");
     if (!base) {
       log("Base URL is required.", "err");
       return;
@@ -128,6 +140,10 @@
         return;
       }
       var ids = Object.keys(json || {}).sort();
+      if (ownerPrefix) {
+        ids = ids.filter(function (id) { return id.indexOf(ownerPrefix + "-") === 0; });
+        log("Filtered by owner '" + ownerPrefix + "'.", "ok");
+      }
       log("Level count: " + ids.length, "ok");
       log("IDs: " + (ids.length ? ids.join(", ") : "<none>"));
     } catch (err) {
@@ -142,5 +158,5 @@
     listLevels();
   });
 
-  log("Ready. Paste a level and click Upload Level.");
+  log("Ready. Uploads use the ID format username-levelname.");
 })();
