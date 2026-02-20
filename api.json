@@ -26,6 +26,7 @@
   "notes": [
     "This is a static web client, not a server runtime.",
     "Database auth depends on your Firebase rules; pass token via UI if required.",
-    "Uploaded level IDs are generated as username-levelname."
+    "Uploaded level IDs are generated as username-levelname.",
+    "Account manager page: /account-manager.html"
   ]
 }
