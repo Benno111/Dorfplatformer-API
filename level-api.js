@@ -15,6 +15,8 @@
   var output = q("output");
   var uploadBtn = q("uploadBtn");
   var listBtn = q("listBtn");
+  var changeUsernameBtn = q("changeUsernameBtn");
+  var ACCOUNT_STORAGE_KEY = "dfnew_account_settings_v2";
 
   function log(msg, cssClass) {
     var line = "[" + new Date().toISOString() + "] " + msg;
@@ -55,6 +57,50 @@
     var userPart = sanitizePart(username, "user");
     var levelPart = sanitizePart(levelName, "level");
     return userPart + "-" + levelPart;
+  }
+
+  function loadStoredAccountSettings() {
+    try {
+      var raw = localStorage.getItem(ACCOUNT_STORAGE_KEY);
+      if (!raw) return;
+      var json = JSON.parse(raw);
+      if (!json || typeof json !== "object") return;
+      if (baseUrlInput && !baseUrlInput.value && json.level_server_url) {
+        baseUrlInput.value = String(json.level_server_url);
+      }
+      if (accountUsernameInput && !accountUsernameInput.value && json.level_server_account_username) {
+        accountUsernameInput.value = sanitizePart(String(json.level_server_account_username), "");
+      }
+      if (authTokenInput && !authTokenInput.value && json.level_server_auth_token) {
+        authTokenInput.value = String(json.level_server_auth_token);
+      }
+    } catch (e) {}
+  }
+
+  function persistAccountSettings() {
+    try {
+      var raw = localStorage.getItem(ACCOUNT_STORAGE_KEY);
+      var json = raw ? JSON.parse(raw) : {};
+      if (!json || typeof json !== "object") json = {};
+      json.level_server_url = normalizeBaseUrl(baseUrlInput.value || "");
+      json.level_server_account_username = sanitizePart((accountUsernameInput && accountUsernameInput.value) || "", "");
+      json.level_server_auth_token = (authTokenInput.value || "").trim();
+      localStorage.setItem(ACCOUNT_STORAGE_KEY, JSON.stringify(json));
+    } catch (e) {}
+  }
+
+  function changeUsername() {
+    var current = ((accountUsernameInput && accountUsernameInput.value) || "").trim();
+    var next = window.prompt("Enter new username", current);
+    if (next === null) return;
+    next = sanitizePart(next, "");
+    if (!next) {
+      log("Username cannot be empty.", "err");
+      return;
+    }
+    if (accountUsernameInput) accountUsernameInput.value = next;
+    persistAccountSettings();
+    log("Username changed to '" + next + "'.", "ok");
   }
 
   async function uploadLevel() {
@@ -157,6 +203,19 @@
   listBtn.addEventListener("click", function () {
     listLevels();
   });
+  if (changeUsernameBtn) {
+    changeUsernameBtn.addEventListener("click", function () {
+      changeUsername();
+    });
+  }
+
+  if (accountUsernameInput) {
+    accountUsernameInput.addEventListener("change", persistAccountSettings);
+  }
+  baseUrlInput.addEventListener("change", persistAccountSettings);
+  authTokenInput.addEventListener("change", persistAccountSettings);
+
+  loadStoredAccountSettings();
 
   log("Ready. Uploads use the ID format username-levelname.");
 })();
