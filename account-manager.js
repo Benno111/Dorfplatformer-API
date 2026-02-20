@@ -2,7 +2,7 @@
   "use strict";
 
   // Hardcoded Firebase configuration.
-  var FIREBASE_API_KEY = "REPLACE_WITH_FIREBASE_WEB_API_KEY";
+  var FIREBASE_API_KEY = "AIzaSyC-lBtzoK98rO6TH6nQV4ugiPsVMbAJ-44";
   var LEVEL_SERVER_URL = "https://timetravel-server-default-rtdb.europe-west1.firebasedatabase.app";
 
   var STORAGE_KEY = "dfnew_account_settings_v2";
