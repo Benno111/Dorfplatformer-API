@@ -3,6 +3,10 @@
   "type": "client-side",
   "host": "GitHub Pages",
   "storage": "Firebase Realtime Database REST API",
+  "firebase": {
+    "api_key": "AIzaSyC-lBtzoK98rO6TH6nQV4ugiPsVMbAJ-44",
+    "level_server_url": "https://timetravel-server-default-rtdb.europe-west1.firebasedatabase.app"
+  },
   "level_read_contract": {
     "list_ids": "/levels.json?shallow=true",
     "fetch_level_data": "/levels/<id>/data.json"
@@ -20,8 +24,8 @@
   },
   "account_contract": {
     "account_field": "owner",
-    "username_source": "accountUsername UI field (fallback: author)",
-    "auth": "Firebase auth token via ?auth=<token>"
+    "username_source": "Firebase ID token via accounts:lookup (fallback: accountUsername, then author)",
+    "auth": "Firebase auth token via ?auth=<token> for Realtime Database writes/reads"
   },
   "notes": [
     "This is a static web client, not a server runtime.",

@@ -1,9 +1,9 @@
 (function () {
   "use strict";
 
-  // Hardcoded Firebase configuration.
-  var FIREBASE_API_KEY = "AIzaSyC-lBtzoK98rO6TH6nQV4ugiPsVMbAJ-44";
-  var LEVEL_SERVER_URL = "https://timetravel-server-default-rtdb.europe-west1.firebasedatabase.app";
+  var API_DESCRIPTOR_PATH = "./api.json";
+  var FIREBASE_API_KEY = "";
+  var LEVEL_SERVER_URL = "";
 
   var STORAGE_KEY = "dfnew_account_settings_v2";
 
@@ -75,11 +75,30 @@
 
   function getApiKey() {
     session.api_key = FIREBASE_API_KEY;
-    if (!session.api_key || session.api_key === "REPLACE_WITH_FIREBASE_WEB_API_KEY") {
-      setStatus("Set FIREBASE_API_KEY in pages/account-manager.js.", "err");
+    if (!session.api_key) {
+      setStatus("Firebase API key missing in api.json.", "err");
       return "";
     }
     return session.api_key;
+  }
+
+  async function loadApiDescriptorConfig() {
+    try {
+      var res = await fetch(API_DESCRIPTOR_PATH, { method: "GET" });
+      var text = await res.text();
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      var json = text ? JSON.parse(text) : {};
+      if (json && json.firebase && typeof json.firebase === "object") {
+        if (typeof json.firebase.api_key === "string") {
+          FIREBASE_API_KEY = json.firebase.api_key.trim();
+        }
+        if (typeof json.firebase.level_server_url === "string") {
+          LEVEL_SERVER_URL = json.firebase.level_server_url.trim().replace(/\/+$/, "");
+        }
+      }
+    } catch (err) {
+      setStatus("Failed to load api.json config.", "err");
+    }
   }
 
   async function firebasePost(path, body) {
@@ -243,12 +262,15 @@
   changePasswordBtn.addEventListener("click", changePassword);
 
   var initial = readStored();
-  if (initial) {
-    session = Object.assign(session, initial);
-  }
-  session.level_server_url = LEVEL_SERVER_URL;
-  session.api_key = FIREBASE_API_KEY;
-  persist();
-  renderSummary();
-  setStatus("Ready.");
+  (async function init() {
+    await loadApiDescriptorConfig();
+    if (initial) {
+      session = Object.assign(session, initial);
+    }
+    if (LEVEL_SERVER_URL) session.level_server_url = LEVEL_SERVER_URL;
+    session.api_key = FIREBASE_API_KEY;
+    persist();
+    renderSummary();
+    setStatus("Ready.");
+  })();
 })();

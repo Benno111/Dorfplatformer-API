@@ -47,6 +47,64 @@
     return "?auth=" + encodeURIComponent(t);
   }
 
+  var apiConfigPromise = null;
+
+  function loadApiConfig() {
+    if (!apiConfigPromise) {
+      apiConfigPromise = fetch("api.json", { method: "GET", cache: "no-store" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("api.json HTTP " + res.status);
+          return res.json();
+        })
+        .catch(function () {
+          return {};
+        });
+    }
+    return apiConfigPromise;
+  }
+
+  async function resolveOwnerFromToken(token) {
+    var t = (token || "").trim();
+    if (!t) return "";
+    var cfg = await loadApiConfig();
+    var apiKey = (((cfg || {}).firebase || {}).api_key || "").trim();
+    if (!apiKey) {
+      log("Token owner lookup skipped (missing firebase.api_key in api.json).", "err");
+      return "";
+    }
+    var url = "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + encodeURIComponent(apiKey);
+    try {
+      var res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken: t })
+      });
+      var text = await res.text();
+      if (!res.ok) {
+        log("Token owner lookup failed: HTTP " + res.status + " " + text, "err");
+        return "";
+      }
+      var json = {};
+      try {
+        json = text ? JSON.parse(text) : {};
+      } catch (e) {
+        log("Token owner lookup parse error: " + String(e), "err");
+        return "";
+      }
+      var user = (json.users && json.users[0]) || {};
+      var displayName = sanitizePart(String(user.displayName || ""), "");
+      if (displayName) return displayName;
+      var email = String(user.email || "").trim();
+      if (email) {
+        var local = email.split("@")[0];
+        return sanitizePart(local, "");
+      }
+    } catch (e) {
+      log("Token owner lookup error: " + String(e), "err");
+    }
+    return "";
+  }
+
   function sanitizePart(raw, fallbackValue) {
     var v = (raw || "").trim().replace(/[^a-zA-Z0-9_-]/g, "_");
     if (!v) return fallbackValue || "level";
@@ -106,11 +164,14 @@
   async function uploadLevel() {
     var base = normalizeBaseUrl(baseUrlInput.value);
     var token = authTokenInput.value;
-    var accountUsername = ((accountUsernameInput && accountUsernameInput.value) || (authorInput && authorInput.value) || "").trim();
+    var accountUsername = ((accountUsernameInput && accountUsernameInput.value) || "").trim();
+    var fallbackAuthor = ((authorInput && authorInput.value) || "").trim();
+    var resolvedOwner = await resolveOwnerFromToken(token);
+    var ownerName = (resolvedOwner || accountUsername || fallbackAuthor || "").trim();
     var levelNameRaw = (levelNameInput.value || levelIdInput.value || "").trim();
-    var levelId = makeLevelId(accountUsername, levelNameRaw);
+    var levelId = makeLevelId(ownerName, levelNameRaw);
     var levelName = sanitizePart(levelNameRaw, "level");
-    var owner = sanitizePart(accountUsername, "");
+    var owner = sanitizePart(ownerName, "");
     var data = levelDataInput.value || "";
 
     if (!base) {
@@ -150,6 +211,10 @@
         return;
       }
       log("Upload succeeded. Response: " + txt, "ok");
+      if (resolvedOwner && accountUsernameInput) {
+        accountUsernameInput.value = resolvedOwner;
+        persistAccountSettings();
+      }
       levelIdInput.value = levelId;
     } catch (err) {
       log("Upload error: " + String(err), "err");
@@ -159,8 +224,10 @@
   async function listLevels() {
     var base = normalizeBaseUrl(baseUrlInput.value);
     var token = authTokenInput.value;
-    var accountUsername = ((accountUsernameInput && accountUsernameInput.value) || (authorInput && authorInput.value) || "").trim();
-    var ownerPrefix = sanitizePart(accountUsername, "");
+    var accountUsername = ((accountUsernameInput && accountUsernameInput.value) || "").trim();
+    var fallbackAuthor = ((authorInput && authorInput.value) || "").trim();
+    var resolvedOwner = await resolveOwnerFromToken(token);
+    var ownerPrefix = sanitizePart((resolvedOwner || accountUsername || fallbackAuthor || "").trim(), "");
     if (!base) {
       log("Base URL is required.", "err");
       return;
