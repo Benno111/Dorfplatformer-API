@@ -1,6 +1,6 @@
 {
-  "version_id": 2,
+  "version_id": 3,
   "version": "2.2.0 Alpha 2",
-  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2A2/setupREVISION2.exe",
+  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2A2/Setup.exe",
   "notes": "Update the updater"
 }
