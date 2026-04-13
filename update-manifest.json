@@ -1,6 +1,6 @@
 {
-  "version_id": 3,
-  "version": "2.2.0 Alpha 2",
-  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2A2/Setup.exe",
+  "version_id": 4,
+  "version": "2.2.0 Alpha 3",
+  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2alpha3/platformer-x64-windows.zip",
   "notes": "Update the updater"
 }
