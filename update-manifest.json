@@ -1,6 +1,6 @@
 {
-  "version_id": 6,
-  "version": "2.2.0 Alpha 5",
-  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2alpha5/platformer-x64-windows-installer.exe",
-  "notes": "remove the smooth camera and add a level select toggle to disable the editor area"
+  "version_id": 7,
+  "version": "2.2.0 Alpha 6",
+  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2alpha6/platformer-x64-windows-installer.exe",
+  "notes": "IMPROVEMENTS"
 }
