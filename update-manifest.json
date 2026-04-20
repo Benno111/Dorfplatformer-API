@@ -1,6 +1,6 @@
 {
-  "version_id": 10,
-  "version": "2.2.0 Alpha 9",
-  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2alpha9/platformer-x64-windows-installer.exe",
+  "version_id": 20,
+  "version": "2.2.0 Beta 1",
+  "installer_url": "https://github.com/Benno111/AppStore/releases/download/2.2beta1/platformer-x64-windows-installer.exe",
   "notes": "IMPROVEMENTS"
 }
