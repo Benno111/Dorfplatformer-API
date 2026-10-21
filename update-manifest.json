@@ -2,5 +2,16 @@
   "version_id": 239,
   "version": "2.3.1",
   "installer_url": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-x64-windows-installer.exe",
+  "installer_urls": {
+    "windows": {
+      "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-x64-windows-installer.exe",
+      "x86": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-x86-windows-installer.exe"
+    },
+    "linux": {
+      "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-x64-linux.zip"
+    },
+    "android": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/tag/draft-main-239",
+    "ios": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-ios-device.ipa"
+  },
   "notes": "IMPROVEMENTS"
 }
