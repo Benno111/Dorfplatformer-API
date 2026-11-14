@@ -10,8 +10,48 @@
     "linux": {
       "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-x64-linux.zip"
     },
-    "android": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/tag/draft-main-239",
-    "ios": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/platformer-ios-device.ipa"
+    "android": {
+      "arm64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/app-arm64-v8a-release.apk",
+      "arm": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/app-armeabi-v7a-release.apk"
+    }
   },
-  "notes": "IMPROVEMENTS"
+  "notes": "Stable release 2.3.1 (build 239). Select nightly or prerelease in Settings > Updater to use a test channel.",
+  "channel": "stable",
+  "channels": {
+    "stable": {
+      "manifest_url": "https://benno111.github.io/Dorfplatformer-API/update-manifest.json"
+    },
+    "nightly": {
+      "description": "Latest successful published build for each platform and edition.",
+      "manifest_urls": {
+        "full": {
+          "windows": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/nightly-windows-x64-full/update-manifest.json"
+          },
+          "linux": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/nightly-linux-x64-full/update-manifest.json"
+          }
+        },
+        "lite": {
+          "windows": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/nightly-windows-x64-lite/update-manifest.json"
+          },
+          "linux": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/nightly-linux-x64-lite/update-manifest.json"
+          }
+        }
+      }
+    },
+    "prerelease": {
+      "description": "Weekly pinned successful build for each platform and edition.",
+      "status": "awaiting_first_snapshot",
+      "manifest_urls": {},
+      "schedule": {
+        "anchor": "2026-11-10T00:00:00Z",
+        "interval_days": 7,
+        "timezone": "UTC"
+      },
+      "manifest_url_template": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-{platform}-{architecture}-{edition}/update-manifest.json"
+    }
+  }
 }
