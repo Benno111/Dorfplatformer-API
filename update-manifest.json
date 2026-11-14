@@ -15,7 +15,7 @@
       "arm": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/draft-main-239/app-armeabi-v7a-release.apk"
     }
   },
-  "notes": "Stable release 2.3.1 (build 239). Select nightly or prerelease in Settings > Updater to use a test channel.",
+  "notes": "Stable release 2.3.1 (build 239). Channel-capable clients can select nightly or prerelease in Settings > Updater.",
   "channel": "stable",
   "channels": {
     "stable": {
@@ -40,7 +40,8 @@
             "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/nightly-linux-x64-lite/update-manifest.json"
           }
         }
-      }
+      },
+      "manifest_url_template": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/nightly-{platform}-{architecture}-{edition}/update-manifest.json"
     },
     "prerelease": {
       "description": "Weekly pinned successful build for each platform and edition.",
