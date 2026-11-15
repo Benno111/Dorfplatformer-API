@@ -13,4 +13,6 @@ are hosted as game release assets and advance independently of this stable
 manifest. The URL templates support `full` and `lite`; Android uses `universal`
 as its architecture. A template describes the endpoint convention, not an
 available build. Unpublished targets are omitted from `manifest_urls`.
-Prerelease remains `awaiting_first_snapshot` until a weekly snapshot is published.
+The current prerelease is manually pinned to `draft-main-321` (3.0.0 Alpha 3,
+build 321) for Windows x64/x86 and Android Full. The next weekly promotion can
+replace this pin.

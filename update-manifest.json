@@ -45,14 +45,28 @@
     },
     "prerelease": {
       "description": "Weekly pinned successful build for each platform and edition.",
-      "status": "awaiting_first_snapshot",
-      "manifest_urls": {},
+      "status": "available",
+      "manifest_urls": {
+        "full": {
+          "windows": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-windows-x64-full/update-manifest.json",
+            "x86": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-windows-x86-full/update-manifest.json"
+          },
+          "android": {
+            "universal": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-android-universal-full/update-manifest.json"
+          }
+        }
+      },
       "schedule": {
         "anchor": "2026-11-10T00:00:00Z",
         "interval_days": 7,
         "timezone": "UTC"
       },
-      "manifest_url_template": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-{platform}-{architecture}-{edition}/update-manifest.json"
+      "manifest_url_template": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-{platform}-{architecture}-{edition}/update-manifest.json",
+      "version_id": 321,
+      "version": "3.0.0 Alpha 3",
+      "source_release_url": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/tag/draft-main-321",
+      "snapshot_date": "2026-11-10"
     }
   }
 }
