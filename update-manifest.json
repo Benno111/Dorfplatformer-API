@@ -52,8 +52,23 @@
             "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-windows-x64-full/update-manifest.json",
             "x86": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-windows-x86-full/update-manifest.json"
           },
+          "linux": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-linux-x64-full/update-manifest.json"
+          },
           "android": {
             "universal": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-android-universal-full/update-manifest.json"
+          }
+        },
+        "lite": {
+          "windows": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-windows-x64-lite/update-manifest.json",
+            "x86": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-windows-x86-lite/update-manifest.json"
+          },
+          "linux": {
+            "x64": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-linux-x64-lite/update-manifest.json"
+          },
+          "android": {
+            "universal": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-android-universal-lite/update-manifest.json"
           }
         }
       },
@@ -63,10 +78,10 @@
         "timezone": "UTC"
       },
       "manifest_url_template": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/download/prerelease-{platform}-{architecture}-{edition}/update-manifest.json",
-      "version_id": 321,
-      "version": "3.0.0 Alpha 3",
-      "source_release_url": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/tag/draft-main-321",
-      "snapshot_date": "2026-11-10"
+      "version_id": 400,
+      "version": "3.0.0 Alpha 4",
+      "source_release_url": "https://github.com/benno11/Dorfplatformer-Timetravel/releases/tag/draft-main-400",
+      "snapshot_date": "2026-11-17"
     }
   }
 }

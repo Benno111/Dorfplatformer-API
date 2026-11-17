@@ -13,6 +13,6 @@ are hosted as game release assets and advance independently of this stable
 manifest. The URL templates support `full` and `lite`; Android uses `universal`
 as its architecture. A template describes the endpoint convention, not an
 available build. Unpublished targets are omitted from `manifest_urls`.
-The current prerelease is manually pinned to `draft-main-321` (3.0.0 Alpha 3,
-build 321) for Windows x64/x86 and Android Full. The next weekly promotion can
-replace this pin.
+The current prerelease is pinned to `draft-main-400` (3.0.0 Alpha 4, build 400)
+for Windows x64/x86, Linux x64, and Android, in both Full and Lite editions.
+The snapshot date is November 17, 2026.
